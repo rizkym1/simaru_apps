@@ -1,24 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// Sesuaikan path ke screen Anda
+// import 'package:get_storage/get_storage.dart';
+import 'package:simaru_app/controllers/login_controller.dart';
+import 'package:simaru_app/controllers/register_controller.dart';
+import 'package:simaru_app/screens/home_screen.dart';
 import 'package:simaru_app/screens/login_screen.dart';
+// import 'package:simaru/screens/home_screen.dart'; // opsional nanti
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  // Pastikan GetX dan GetStorage diinisialisasi sebelum runApp
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(const MainApp());
 }
 
-class MyApp extends StatelessWidget {
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Aplikasi Login',
+      title: 'Simaru App',
       theme: ThemeData(
-        primarySwatch: Colors.purple,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        primaryColor: const Color(0xFF003366),
+        useMaterial3: true,
       ),
-      // Langsung arahkan ke LoginScreen
+      // Jika token sudah ada, langsung ke home, kalau belum ke login
       home: const LoginScreen(),
+      initialBinding: BindingsBuilder(() {
+        Get.put(LoginController());
+        Get.put(RegisterController());
+        Get.put(HomeScreen());
+      }),
     );
   }
 }

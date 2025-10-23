@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:simaru_app/controllers/login_controller.dart';
-import 'package:simaru_app/screens/register_screen.dart';
+import 'package:simaru_app/controllers/register_controller.dart';
+import 'package:simaru_app/screens/login_screen.dart';
 
-class LoginScreen extends GetView<LoginController> {
-  const LoginScreen({super.key});
+class RegisterScreen extends GetView<RegisterController> {
+  const RegisterScreen({super.key});
   final Color unigalColor = const Color(0xFF003366);
 
   @override
@@ -19,7 +19,7 @@ class LoginScreen extends GetView<LoginController> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    "Login",
+                    "Register",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 32,
@@ -28,6 +28,18 @@ class LoginScreen extends GetView<LoginController> {
                     ),
                   ),
                   const SizedBox(height: 40),
+
+                  TextField(
+                    controller: controller.nameController,
+                    decoration: InputDecoration(
+                      labelText: "Nama Lengkap",
+                      prefixIcon: const Icon(Icons.person_outline),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
 
                   TextField(
                     controller: controller.emailController,
@@ -52,6 +64,19 @@ class LoginScreen extends GetView<LoginController> {
                       ),
                     ),
                   ),
+                  const SizedBox(height: 20),
+
+                  TextField(
+                    controller: controller.confirmPasswordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      labelText: "Konfirmasi Password",
+                      prefixIcon: const Icon(Icons.lock_person_outlined),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 30),
 
                   Obx(
@@ -66,7 +91,7 @@ class LoginScreen extends GetView<LoginController> {
                       onPressed:
                           controller.isLoading.value
                               ? null
-                              : () => controller.login(),
+                              : () => controller.register(),
                       child:
                           controller.isLoading.value
                               ? const SizedBox(
@@ -78,7 +103,7 @@ class LoginScreen extends GetView<LoginController> {
                                 ),
                               )
                               : const Text(
-                                "Login",
+                                "Daftar",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -92,14 +117,14 @@ class LoginScreen extends GetView<LoginController> {
 
                   TextButton(
                     onPressed: () {
-                      Get.to(
-                        () => const RegisterScreen(),
+                      Get.off(
+                        () => const LoginScreen(),
                         transition: Transition.fadeIn,
                         duration: const Duration(milliseconds: 400),
                       );
                     },
                     child: Text(
-                      "Belum punya akun? Daftar di sini",
+                      "Sudah punya akun? Login di sini",
                       style: TextStyle(
                         color: unigalColor,
                         fontWeight: FontWeight.w600,

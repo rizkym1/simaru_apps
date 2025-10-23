@@ -1,46 +1,43 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:simaru_app/services/login_service.dart';
+import 'package:simaru_app/screens/home_screen.dart';
 
 class LoginController extends GetxController {
-  // Controller untuk setiap TextField
+  final LoginService _service = Get.put(LoginService());
+  var isLoading = false.obs;
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // Variabel observable untuk state show/hide password
-  var isPasswordHidden = true.obs;
+  Future<void> login() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
 
-  // Fungsi yang akan dipanggil saat tombol login ditekan
-  void login() {
-    String email = emailController.text;
-    String password = passwordController.text;
-
-    // Validasi sederhana
     if (email.isEmpty || password.isEmpty) {
-      Get.snackbar('Error', 'Email dan Password tidak boleh kosong');
-      return;
-    }
-    if (!GetUtils.isEmail(email)) {
-      Get.snackbar('Error', 'Format email tidak valid');
+      Get.snackbar('Error', 'Email dan Password harus diisi');
       return;
     }
 
-    // Jika validasi berhasil, cetak di konsol (ganti dengan logika API Anda)
-    print("Mencoba login dengan:");
-    print("Email: $email");
-    print("Password: $password");
+    try {
+      isLoading.value = true;
 
-    Get.snackbar(
-      'Sukses',
-      'Login berhasil!',
-      backgroundColor: Colors.green,
-      colorText: Colors.white,
-    );
+      final response = await _service.login(email, password);
 
-    // Contoh navigasi ke halaman lain setelah login
-    // Get.offAllNamed('/home');
+      if (response != null && response['accessToken'] != null) {
+        Get.snackbar('Sukses', 'Login berhasil');
+        // Navigasi ke dashboard setelah login sukses
+        Get.to(() => const HomeScreen());
+      } else {
+        Get.snackbar('Gagal', 'Email atau password salah');
+      }
+    } catch (e) {
+      Get.snackbar('Error', 'Terjadi kesalahan: $e');
+    } finally {
+      isLoading.value = false;
+    }
   }
 
-  // Penting untuk membersihkan controller saat halaman ditutup
   @override
   void onClose() {
     emailController.dispose();
