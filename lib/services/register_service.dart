@@ -13,7 +13,7 @@ class RegisterService extends GetxService {
   ) async {
     try {
       final response = await client.post(
-        Uri.parse('http://127.0.0.1:8000/api/register'),
+        Uri.parse('http://10.0.2.2:8000/api/register'),
         body: {
           'name': name,
           'email': email,

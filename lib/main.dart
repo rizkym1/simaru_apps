@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 // import 'package:get_storage/get_storage.dart';
 import 'package:simaru_app/controllers/login_controller.dart';
 import 'package:simaru_app/controllers/register_controller.dart';
-import 'package:simaru_app/screens/home_screen.dart';
 import 'package:simaru_app/screens/login_screen.dart';
 // import 'package:simaru/screens/home_screen.dart'; // opsional nanti
 
@@ -31,7 +30,6 @@ class MainApp extends StatelessWidget {
       initialBinding: BindingsBuilder(() {
         Get.put(LoginController());
         Get.put(RegisterController());
-        Get.put(HomeScreen());
       }),
     );
   }
